@@ -2,6 +2,7 @@ package br.com.automatizando;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -131,5 +132,31 @@ public class TesteCampoDeTreinamento {
         driver.quit();
     }
 
+    @Test
+    public void deveInteragirComLinks() {
+        WebDriverManager.chromedriver().setup();
+        ChromeDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        driver.findElement(By.linkText("Voltar")).click();
+        Assert.assertEquals("Voltou!", driver.findElement(By.id("resultado")).getText());
 
+        driver.quit();
+    }
+
+    @Test
+    public void deveBuscarTextosNaPagina() {
+        WebDriverManager.chromedriver().setup();
+        ChromeDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+
+        Assert.assertEquals("Campo de Treinamento",
+                driver.findElement(By.tagName("h3")).getText());
+
+        Assert.assertEquals("Cuidado onde clica, muitas armadilhas...",
+                driver.findElement(By.className("facilAchar")).getText());
+
+        driver.quit();
+    }
 }
