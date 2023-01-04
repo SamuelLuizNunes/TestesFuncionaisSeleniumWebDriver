@@ -1,5 +1,6 @@
 package br.com.automatizando;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -62,4 +63,22 @@ public class DSL {
     public String obterTexto(String id){
         return obterTexto(By.id(id));
     }
+
+    public String alertaObterTextoEAceita(){
+        Alert alert = driver.switchTo().alert();
+        return alert.getText();
+    }
+
+    public void entrarFrame(String id){
+        driver.switchTo().frame(id);
+    }
+
+    public void sairFrame(){
+        driver.switchTo().defaultContent();
+    }
+
+    public void trocarJanela(String id){
+        driver.switchTo().window(id);
+    }
+
 }

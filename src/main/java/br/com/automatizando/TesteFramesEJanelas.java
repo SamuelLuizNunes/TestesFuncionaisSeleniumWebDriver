@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class TesteFramesEJanelas {
 
     private ChromeDriver driver;
+    private DSL dsl;
 
     @Before
     public void inicializa(){
@@ -19,6 +20,7 @@ public class TesteFramesEJanelas {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl = new DSL(driver);
     }
 
     @After
@@ -28,14 +30,12 @@ public class TesteFramesEJanelas {
 
     @Test
     public void deveInteragirComFrames() {
-        driver.switchTo().frame("frame1");
-        driver.findElement(By.id("frameButton")).click();
-        Alert alert = driver.switchTo().alert();
-        String msg = alert.getText();
+        dsl.entrarFrame("frame1");
+        dsl.clickBotao("frameButton");
+        String msg = dsl.alertaObterTextoEAceita();
         Assert.assertEquals("Frame OK!", msg);
-        alert.accept();
-        driver.switchTo().defaultContent();
-        driver.findElement(By.id("elementosForm:nome")).sendKeys(msg);
+        dsl.sairFrame();
+        dsl.escreve("elementosForm:nome", msg);
     }
 
     @Test
