@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class TesteAlert {
     private ChromeDriver driver;
+    private DSL dsl;
 
     @Before
     public void inicializa(){
@@ -18,6 +19,7 @@ public class TesteAlert {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl = new DSL(driver);
     }
 
     @After
@@ -26,41 +28,29 @@ public class TesteAlert {
     }
     @Test
     public void deveInteragirComAlertSimples() {
-        driver.findElement(By.id("alert")).click();
-        Alert alert = driver.switchTo().alert();
-        String texto = alert.getText();
+        dsl.clickBotao("alert");
+        String texto = dsl.alertaObterTextoEAceita();
         Assert.assertEquals("Alert Simples", texto);
-        alert.accept();
-        driver.findElement(By.id("elementosForm:nome")).sendKeys(texto);
+        dsl.escreve("elementosForm:nome", texto);
     }
 
     @Test
     public void deveInteragirComAlertConfirm() {
-        driver.findElement(By.id("confirm")).click();
-        Alert alert = driver.switchTo().alert();
-        Assert.assertEquals("Confirm Simples", alert.getText());
-        alert.accept();
-        Assert.assertEquals("Confirmado", alert.getText());
-        alert.accept();
+        dsl.clickBotao("confirm");
+        Assert.assertEquals("Confirm Simples", dsl.alertaObterTextoEAceita());
+        Assert.assertEquals("Confirmado", dsl.alertaObterTextoEAceita());
 
-        driver.findElement(By.id("confirm")).click();
-        alert = driver.switchTo().alert();
-        Assert.assertEquals("Confirm Simples", alert.getText());
-        alert.dismiss();
-        Assert.assertEquals("Negado", alert.getText());
-        alert.accept();
+        dsl.clickBotao("confirm");
+        Assert.assertEquals("Confirm Simples", dsl.alertaObterTextoENega());
+        Assert.assertEquals("Negado", dsl.alertaObterTextoENega());
     }
 
     @Test
     public void deveInteragirComAlertPrompt() {
-        driver.findElement(By.id("prompt")).click();
-        Alert alert = driver.switchTo().alert();
-        Assert.assertEquals("Digite um numero", alert.getText());
-        alert.sendKeys("12");
-        alert.accept();
-        Assert.assertEquals("Era 12?", alert.getText());
-        alert.accept();
-        Assert.assertEquals(":D", alert.getText());
-        alert.accept();
+        dsl.clickBotao("prompt");
+        Assert.assertEquals("Digite um numero", dsl.alertaObterTexto());
+        dsl.alertaEscreverEAceitar("12");
+        Assert.assertEquals("Era 12?", dsl.alertaObterTextoEAceita());
+        Assert.assertEquals(":D", dsl.alertaObterTextoEAceita());
     }
 }

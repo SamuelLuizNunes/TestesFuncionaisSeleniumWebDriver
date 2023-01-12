@@ -17,6 +17,10 @@ public class DSL {
         driver.findElement(By.id(idCampo)).sendKeys(texto);
     }
 
+    public void escreve(By by, String texto){
+        driver.findElement(by).sendKeys(texto);
+    }
+
     public String obterValorCampo(String idCampo){
         return driver.findElement(By.id(idCampo)).getAttribute("value");
     }
@@ -66,7 +70,32 @@ public class DSL {
 
     public String alertaObterTextoEAceita(){
         Alert alert = driver.switchTo().alert();
-        return alert.getText();
+        String texto = alert.getText();
+        alert.accept();
+        return texto;
+    }
+
+    public String alertaObterTexto(){
+        Alert alert = driver.switchTo().alert();
+        String texto = alert.getText();
+        return texto;
+    }
+
+    public void alertaEscreverEAceitar(String texto){
+        Alert alert = driver.switchTo().alert();
+        alert.sendKeys(texto);
+        alert.accept();
+    }
+
+    public String alertaObterTextoENega(){
+        Alert alert = driver.switchTo().alert();
+        String texto = alert.getText();
+        alert.dismiss();
+        return texto;
+    }
+
+    public void trocaJanela(String id){
+        driver.switchTo().window(id);
     }
 
     public void entrarFrame(String id){
