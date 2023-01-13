@@ -1,9 +1,6 @@
 package br.com.automatizando;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
@@ -110,4 +107,8 @@ public class DSL {
         driver.switchTo().window(id);
     }
 
+    public Object executarJS(String cmd, Object... param){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        return js.executeScript(cmd, param);
+    }
 }

@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class TesteFramesEJanelas {
@@ -34,8 +35,16 @@ public class TesteFramesEJanelas {
         dsl.clickBotao("frameButton");
         String msg = dsl.alertaObterTextoEAceita();
         Assert.assertEquals("Frame OK!", msg);
-        dsl.sairFrame();
-        dsl.escreve("elementosForm:nome", msg);
+    }
+
+    @Test
+    public void deveInteragirComFrameEscondido(){
+        WebElement frame = driver.findElement(By.id("frame2"));
+        dsl.executarJS("window.scrollBy(0, arguments[0])", frame.getLocation().y);
+        dsl.entrarFrame("frame2");
+        dsl.clickBotao("frameButton");
+        String msg = dsl.alertaObterTextoEAceita();
+        Assert.assertEquals("Frame OK!", msg);
     }
 
     @Test
@@ -56,6 +65,8 @@ public class TesteFramesEJanelas {
         driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
         dsl.escreve(By.tagName("textarea"), "E agora?");
     }
+
+
 }
 
 
