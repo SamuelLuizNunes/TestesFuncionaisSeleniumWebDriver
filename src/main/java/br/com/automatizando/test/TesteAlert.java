@@ -1,30 +1,27 @@
-package br.com.automatizando;
+package br.com.automatizando.test;
 
+import br.com.automatizando.core.DSL;
+import br.com.automatizando.core.DriverFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class TesteAlert {
-    private ChromeDriver driver;
     private DSL dsl;
 
     @Before
     public void inicializa(){
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-        dsl = new DSL(driver);
+        DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl = new DSL();
     }
 
     @After
     public void finaliza(){
-        driver.quit();
+        DriverFactory.killDrive();
     }
     @Test
     public void deveInteragirComAlertSimples() {

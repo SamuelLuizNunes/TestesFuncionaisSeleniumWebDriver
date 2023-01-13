@@ -1,5 +1,9 @@
-package br.com.automatizando;
+package br.com.automatizando.test;
 
+import br.com.automatizando.core.BaseTeste;
+import br.com.automatizando.core.DSL;
+import br.com.automatizando.core.DriverFactory;
+import br.com.automatizando.page.CampoTreinamentoPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -7,15 +11,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class TesteRegrasCadastro {
-    private ChromeDriver driver;
+public class TesteRegrasCadastro extends BaseTeste {
     private DSL dsl;
     private CampoTreinamentoPage page;
 
@@ -35,16 +37,9 @@ public class TesteRegrasCadastro {
     @Before
     public void inicializa(){
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-        dsl = new DSL(driver);
-        page = new CampoTreinamentoPage(driver);
-    }
-
-    @After
-    public void finaliza(){
-        driver.quit();
+        DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl = new DSL();
+        page = new CampoTreinamentoPage();
     }
 
     @Parameterized.Parameters

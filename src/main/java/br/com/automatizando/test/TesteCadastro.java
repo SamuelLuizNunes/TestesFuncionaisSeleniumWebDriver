@@ -1,29 +1,25 @@
-package br.com.automatizando;
+package br.com.automatizando.test;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import br.com.automatizando.core.BaseTeste;
+import br.com.automatizando.core.DriverFactory;
+import br.com.automatizando.page.CampoTreinamentoPage;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class TesteCadastro {
-
-    private ChromeDriver driver;
+public class TesteCadastro extends BaseTeste {
     private CampoTreinamentoPage page;
 
     @Before
     public void inicializa(){
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-        page = new CampoTreinamentoPage(driver);
+        DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        page = new CampoTreinamentoPage();
     }
 
     @After
     public void finaliza(){
-        driver.quit();
+        DriverFactory.killDrive();
     }
 
     @Test

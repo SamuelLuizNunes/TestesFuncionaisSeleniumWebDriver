@@ -1,9 +1,10 @@
-package br.com.automatizando;
+package br.com.automatizando.test;
 
+import br.com.automatizando.core.DSL;
+import br.com.automatizando.core.DriverFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,21 +14,18 @@ import java.util.List;
 
 public class TesteCampoDeTreinamento {
 
-    private WebDriver driver;
     private DSL dsl;
 
     @Before
     public void inicializa() {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-        dsl = new DSL(driver);
+        DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl = new DSL();
     }
 
     @After
     public void finaliza() {
-        driver.quit();
+        DriverFactory.killDrive();
     }
 
     @Test
@@ -61,7 +59,7 @@ public class TesteCampoDeTreinamento {
     }
     @Test
     public void deveVerificarValoresCombo() {
-        WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
+        WebElement element = DriverFactory.getDriver().findElement(By.id("elementosForm:escolaridade"));
         Select combo = new Select(element);
         List<WebElement> options = combo.getOptions();
         Assert.assertEquals(8, options.size());
@@ -82,7 +80,7 @@ public class TesteCampoDeTreinamento {
         dsl.selecionarCombo("elementosForm:esportes","Corrida");
         dsl.selecionarCombo("elementosForm:esportes","O que eh esporte?");
 
-        WebElement element = driver.findElement(By.id("elementosForm:esportes"));
+        WebElement element = DriverFactory.getDriver().findElement(By.id("elementosForm:esportes"));
         Select combo = new Select(element);
         List<WebElement> allSelectedOptions = combo.getAllSelectedOptions();
         Assert.assertEquals(3, allSelectedOptions.size());
@@ -95,7 +93,7 @@ public class TesteCampoDeTreinamento {
     @Test
     public void deveInteragirComBotoes() {
         dsl.clickBotao("buttonSimple");
-        WebElement botao = driver.findElement(By.id("buttonSimple"));
+        WebElement botao = DriverFactory.getDriver().findElement(By.id("buttonSimple"));
         Assert.assertEquals("Obrigado!", botao.getAttribute("value"));
     }
 

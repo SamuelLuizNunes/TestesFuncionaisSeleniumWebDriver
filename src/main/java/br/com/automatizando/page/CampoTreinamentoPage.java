@@ -1,13 +1,10 @@
-package br.com.automatizando;
+package br.com.automatizando.page;
 
+import br.com.automatizando.core.BasePage;
+import br.com.automatizando.core.DSL;
 import org.openqa.selenium.WebDriver;
 
-public class CampoTreinamentoPage {
-    private DSL dsl;
-
-    public CampoTreinamentoPage(WebDriver driver){
-        dsl = new DSL(driver);
-    }
+public class CampoTreinamentoPage extends BasePage {
     public void setNome(String nome){
         dsl.escreve("elementosForm:nome",nome);
     }

@@ -1,5 +1,7 @@
-package br.com.automatizando;
+package br.com.automatizando.test;
 
+import br.com.automatizando.core.DSL;
+import br.com.automatizando.core.DriverFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
@@ -14,16 +16,13 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class TesteSincronismo {
-    private WebDriver driver;
     private DSL dsl;
 
     @Before
     public void inicializa() {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-        dsl = new DSL(driver);
+        DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl = new DSL();
     }
 
     @After
@@ -41,16 +40,16 @@ public class TesteSincronismo {
 
     @Test
     public void deveInteragirComEsperaImplicita() throws InterruptedException {
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        DriverFactory.getDriver().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         dsl.clickBotao("buttonDelay");
         dsl.escreve("novoCampo", "Deu certo");
-        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        DriverFactory.getDriver().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     }
 
     @Test
     public void deveInteragirComEsperaExplicita() throws InterruptedException {
         dsl.clickBotao("buttonDelay");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), Duration.ofSeconds(30));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("novoCampo")));
         dsl.escreve("novoCampo", "Deu certo");
     }
